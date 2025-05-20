@@ -157,11 +157,11 @@ Pozycja środkowa potencjometru odpowiada napięciu **5V**, co traktowane jest j
 
 > **Rysunek 5.** Schemat ideowy przykładu demonstracyjnego sterowania zaworami
 
-Kompletny przykład demonstracyjny sterowania zaworami dostępny jest pod adresem: https://github.com/OpenCPLC/DemoValve. 
+Kompletny przykład demonstracyjny sterowania zaworami dostępny jest pod adresem: https://github.com/OpenCPLC/DemoValves. 
 Najprostszym sposobem na jego uruchomienie jest skorzystanie z aplikacji **OpenCPLC Wizard**: https://github.com/OpenCPLC/Wizard. Program przygotuje środowisko do pracy i będzie można załadować opisany wyżej przykład.
 
 ```bash
-./wizard -g https://github.com/OpenCPLC/DemoValve # Pobranie projektu
+./wizard -g https://github.com/OpenCPLC/DemoValves # Pobranie projektu
 make run # Wgranie programu do sterownika
 ```
 
