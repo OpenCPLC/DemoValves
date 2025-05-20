@@ -75,10 +75,10 @@ Aby użytkownik mógł swobodnie dostosować działanie funkcji sterującej do k
 
 Warto również zapewnić dodatkowe parametry, które poprawiają ergonomię obsługi oraz wydłużają żywotność zaworów:
 
-- `dither` — amplituda oscylacji sygnału _(redukuje tarcie i histerezę)_,
-- `max_delta` — maksymalny dozwolony skok sygnału sterującego _(filtr antyszarpnięciowy)_,
-- `alpha_shift` — siła wygładzania filtru EMA,
 - `rest` — wartość prądu spoczynkowego _(utrzymanie gotowości zaworu)_,
+- `step_delta` — maksymalny dozwolony skok sygnału sterującego _(filtr antyszarpnięciowy)_,
+- `ema_alpha` — siła wygładzania filtru EMA,
+- `dither` — amplituda oscylacji sygnału _(redukuje tarcie i histerezę)_,
 - `idle_time` — czas po, którym prąd spoczynkowy nie jest generowany,
 - `preserv`:
   - `value` — amplituda impulsu konserwującego,
@@ -166,10 +166,49 @@ Najprostszym sposobem na jego uruchomienie jest skorzystanie z aplikacji **OpenC
 make run # Wgranie programu do sterownika
 ```
 
-W publikacji prezentowany jest jedynie wątek[^10] sterowania zaworami, obejmujący pobranie sygnałów wejściowych oraz modelowanie i aktywację sygnałów sterujących:
+
+W publikacji przedstawiono wyłącznie wycinek[^10] dotyczący sterowania zaworami, obejmujący modelowanie oraz aktywację sygnałów sterujących, z pominięciem pobierania sygnałów wejściowych i ich filtracji. Wartości `cfg.start` oraz `cfg.end` mieszczą się w zakresie **0..100%**, ponieważ funkcja wyjściowa `DOUT_Duty` oczekuje wartości procentowej. Pozostałe parametry są znormalizowane do zakresu **0..1**.
+
 
 ```c
-// TODO...
+void disable_valves(void)
+{
+  DOUT_Duty(&TO1, cfg.min * cfg.rest);
+  DOUT_Duty(&TO2, cfg.min * cfg.rest);
+  DOUT_Rst(&RO1);
+}
+
+void loop(void)
+{
+  /* Load default and startup values */
+  while(1) {
+    /* Read inputs and apply filtering */
+    in = (in * 2) - 1.0; // Przeskalowanie sygnału wejściowego do zakresu -1..1
+    CHAN_t chan = CHAN_None;
+    if(in >= cfg.start) { chan = CHAN_1; } // Obsługa zaworu 1
+    else if(in <= -cfg.start) { chan = CHAN_2; in *= -1; } // Obsługa zaworu 2
+    else { disable_valves(); continue; } // Martwa strefa – zawory pozostają wyłączone
+    if(!DIN_State(&DI1)) {
+      // Brak sygnału zezwolenia na aktywację
+      LOG_Warning("Missing enable signal, but the potentiometer indicates activation");
+      disable_valves();
+      continue;
+    }
+    float a = (cfg.max - cfg.min) / (cfg.end - cfg.start);
+    float b = cfg.min - (a * cfg.start);
+    float out = pow(in, cfg.ramp) * a + b; // Przeliczenie wartości `in` (x) na `out` (y)
+    if(out > cfg.max) out = cfg.max; // Ograniczenie wartości do `cfg.max`
+    if(chan == CHAN_1) { // Aktywacja zaworu 1, wyłączenie zaworu 2
+      DOUT_Duty(&TO1, out);
+      DOUT_Duty(&TO2, cfg.min * cfg.rest);
+    }
+    else if(chan == CHAN_2) { // Aktywacja zaworu 2, wyłączenie zaworu 1
+      DOUT_Duty(&TO1, cfg.min * cfg.rest);
+      DOUT_Duty(&TO2, out);
+    }
+    DOUT_Set(&RO1);
+  }
+}
 ```
 
 [^10]: E. Świtalski, K. Górecki; **System zwalniania wątków VRTS jako alternatywa dla RTOS**, Przegląd Elektrotechniczny, 2023, `DOI: 10.15199/48.2023.09.52`
