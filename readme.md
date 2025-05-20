@@ -69,9 +69,8 @@ Aby użytkownik mógł swobodnie dostosować działanie funkcji sterującej do k
 
 - `start` — wartość `x` określająca szerokość strefy martwej sygnału sterującego,
 - `min` — wartość aktywacyjna `y`, od której zawór zaczyna się otwierać,
-- `end` — wartość `x` określająca moment całkowitego otwarcia zaworu,
 - `max` — wartość końcowa `y`, przy której zawór osiąga pełne otwarcie,
-- `ramp` — parametr kształtujący krzywiznę funkcji (np. parabolicznej lub wykładniczej).
+- `ramp` — parametr kształtujący krzywiznę funkcji _(np. parabolicznej lub wykładniczej)_.
 
 Warto również zapewnić dodatkowe parametry, które poprawiają ergonomię obsługi oraz wydłużają żywotność zaworów:
 
@@ -167,8 +166,7 @@ make run # Wgranie programu do sterownika
 ```
 
 
-W publikacji przedstawiono wyłącznie wycinek[^10] dotyczący sterowania zaworami, obejmujący modelowanie oraz aktywację sygnałów sterujących, z pominięciem pobierania sygnałów wejściowych i ich filtracji. Wartości `cfg.start` oraz `cfg.end` mieszczą się w zakresie **0..100%**, ponieważ funkcja wyjściowa `DOUT_Duty` oczekuje wartości procentowej. Pozostałe parametry są znormalizowane do zakresu **0..1**.
-
+W publikacji przedstawiono wyłącznie wycinek[^10] dotyczący sterowania zaworami, obejmujący modelowanie oraz aktywację sygnałów sterujących, z pominięciem pobierania sygnałów wejściowych i ich filtracji. Wartość `cfg.start` mieści się w zakresie **0..100%**, ponieważ funkcja wyjściowa `DOUT_Duty` oczekuje wartości procentowej. Pozostałe parametry są znormalizowane do zakresu **0..1**.
 
 ```c
 void disable_valves(void)
@@ -194,7 +192,7 @@ void loop(void)
       disable_valves();
       continue;
     }
-    float a = (cfg.max - cfg.min) / (cfg.end - cfg.start);
+    float a = (cfg.max - cfg.min) / (100.0 - cfg.start);
     float b = cfg.min - (a * cfg.start);
     float out = pow(in, cfg.ramp) * a + b; // Przeliczenie wartości `in` (x) na `out` (y)
     if(out > cfg.max) out = cfg.max; // Ograniczenie wartości do `cfg.max`
