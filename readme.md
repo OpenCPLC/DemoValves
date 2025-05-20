@@ -97,7 +97,7 @@ Każda z tych metod ma swoje zalety. Układy Source są wygodne instalacyjnie, d
 
 ![Mosfer](img/mosfet.png)
 
-> **Rysunek 3**. Układy wykonawcze wykorzystujące wyjścia typu Source z tranzystorem MOSFET typu P 🅰 oraz Sink z tranzystorem MOSFET typu N _(dla wysokich 🅱, jak i niskich niskich 🅲 prądów)_
+> **Rysunek 3**. Układy wykonawcze wykorzystujące wyjścia typu Source z tranzystorem MOSFET typu P `A` oraz Sink z tranzystorem MOSFET typu N _(dla wysokich `B`, jak i niskich niskich `C` prądów)_
 
 W Europie dominującym standardem są wyjścia typu Source. Takie rozwiązania są uznawane za bezpieczniejsze i bardziej kompatybilne z większością dostępnych czujników i modułów I/O. W Ameryce Północnej oraz w Azji częściej spotyka się instalacje oparte na układach Sink, choć obecnie granice te coraz bardziej się zacierają, a wiele urządzeń oferuje konfigurowalne tryby pracy lub wersje dopasowane do obu standardów.
 
@@ -159,7 +159,7 @@ Pozycja środkowa potencjometru odpowiada napięciu **5V**, co traktowane jest j
 > **Rysunek 5.** Schemat ideowy przykładu demonstracyjnego sterowania zaworami
 
 Kompletny przykład demonstracyjny sterowania zaworami dostępny jest pod adresem: https://github.com/OpenCPLC/DemoValve. 
-Najprostszym sposobem na jego uruchomienie jest skorzystanie z aplikacji **OpenCPLC Wizard**: https://github.com/OpenCPLC/Wizard. Program przygotuje środowiskoW do pracy i będzie można załadować opisany wyżej przykład.
+Najprostszym sposobem na jego uruchomienie jest skorzystanie z aplikacji **OpenCPLC Wizard**: https://github.com/OpenCPLC/Wizard. Program przygotuje środowisko do pracy i będzie można załadować opisany wyżej przykład.
 
 ```bash
 ./wizard -g https://github.com/OpenCPLC/DemoValve # Pobranie projektu
@@ -178,7 +178,7 @@ W publikacji prezentowany jest jedynie wątek[^10] sterowania zaworami, obejmuj�
 
 Projekt polega na adaptacji standardowej koparki do roli zdalnie sterowanego systemu serwisowego, przeznaczonego do czyszczenia i obsługi innych maszyn w warunkach placu budowy oraz podczas prac terenowych. Zmodernizowana konstrukcja umożliwia bezpieczne prowadzenie operacji bez konieczności przebywania operatora w kabinie, co zwiększa elastyczność i bezpieczeństwo pracy w trudnym środowisku. W trakcie pracy operator trzyma nadajnik w rękach, który jest on zasilany bateryjnie. Odbiornik, sterowniki **Eco** oraz pozostałe komponenty systemu znajdują się na maszynie i są zasilane z głównego akumulatora ładowanego przez agregat prądotwórczy. 
 
-W projekcie zastosowano bezprzewodowy system sterowania firmy **Irel**. Centralnym elementem jest ręczny nadajnik _(pad)_ wyposażony w zestaw manipulatorów, którego układ (layout) może być dostosowany do indywidualnych potrzeb klienta, zarówno pod względem liczby i rodzaju elementów sterujących, jak i ich rozmieszczenia. Pad przesyła drogą radiową aktualne stany wszystkich manipulatorów _(joysticków, przełączników itp.)_ do dedykowanego odbiornika zamontowanego na maszynie. Odbiornik przetwarza te dane i generuje odpowiednie sygnały wyjściowe:
+W projekcie zastosowano bezprzewodowy system sterowania firmy **Irel**. Centralnym elementem jest ręczny nadajnik _(pad)_ wyposażony w zestaw manipulatorów, którego układ _(layout)_ może być dostosowany do indywidualnych potrzeb klienta, zarówno pod względem liczby i rodzaju elementów sterujących, jak i ich rozmieszczenia. Pad przesyła drogą radiową aktualne stany wszystkich manipulatorów _(joysticków, przełączników itp.)_ do dedykowanego odbiornika zamontowanego na maszynie. Odbiornik przetwarza te dane i generuje odpowiednie sygnały wyjściowe:
 
 - analogowe w standardach automatyki **0..10V** lub **4..20mA** dla manipulatorów typu joystick,
 - cyfrowe _(ON/OFF)_ dla przełączników.
@@ -193,7 +193,7 @@ Ze względu na ochronę własności intelektualnej firmy, w publikacji przedstaw
 
 ![Photos](img/photos.png)
 
-> **Rysunek 7.** Zdjęcia: przerobionej koparki 🅰, rozdzielnicy 🅱 oraz layoutu pada 🅲.
+> **Rysunek 7.** Zdjęcia: przerobionej koparki `A`, rozdzielnicy `B` oraz layoutu pada `C`.
 
 ## Podsumowanie
 
