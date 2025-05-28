@@ -1,6 +1,6 @@
 # Sterowanie zaworami proporcjonalnymi w warunkach mobilnych
 
-Emilian **Świtalski**, Krzysztof **Górecki**
+Emilian **Świtalski**, Krzysztof **Górecki**, Kalina **Detka**
 
 ### Streszczenie
 
@@ -10,7 +10,7 @@ Artykuł przedstawia zagadnienia związane z bezpośrednim sterowaniem zaworami 
 
 ## Wstęp
 
-Zawory **elektromagnetyczne** są kluczowymi elementami układów hydrauliki siłowej w maszynach przemysłowych i budowlanych, takich jak koparki, ładowarki, dźwigi czy podnośniki[^1][^2]. Sterują one przepływem oleju hydraulicznego do siłowników i silników, umożliwiając precyzyjne wykonywanie ruchów roboczych, takich jak podnoszenie, przesuwanie czy obracanie, zatem pełnią rolę podstawowych elementów wykonawczych w tego typy maszynach. Często stosuje się zawory proporcjonalne, które umożliwiają płynną regulację ciśnienia i przepływu, co pozwala na dostosowanie prędkości i siły działania siłowników do aktualnych potrzeb operacyjnych[^3]. Układy sterowania w tych maszynach zasilane są zazwyczaj napięciem **12V**, co wynika z kompatybilności z instalacjami elektrycznymi pojazdów oraz zastosowania akumulatorów o takim napięciu nominalnym.
+Zawory **elektromagnetyczne** są kluczowymi elementami układów hydrauliki siłowej w maszynach przemysłowych i budowlanych, takich jak koparki, ładowarki, żurawie czy podnośniki[^1][^2]. Sterują one przepływem oleju hydraulicznego do siłowników i silników, umożliwiając precyzyjne wykonywanie ruchów roboczych, takich jak podnoszenie, przesuwanie czy obracanie, zatem pełnią rolę podstawowych elementów wykonawczych w tego typy maszynach. Często stosuje się zawory proporcjonalne, które umożliwiają płynną regulację ciśnienia i przepływu, co pozwala na dostosowanie prędkości i siły działania siłowników do aktualnych potrzeb operacyjnych[^3]. Układy sterowania w tych maszynach zasilane są zazwyczaj napięciem **12V**, co wynika z kompatybilności z instalacjami elektrycznymi pojazdów oraz zastosowania akumulatorów o takim napięciu nominalnym.
 
 Należy zauważyć, że w warunkach terenowych napięcie zasilania bywa niestabilne, mogą występować spadki napięcia, zakłócenia od silników, straty na przewodach oraz wahania związane z temperaturą, zużyciem akumulatora czy obciążeniem przetwornic. Dodatkowo, podczas uruchamiania maszyny napięcie w instalacji może gwałtownie wzrosnąć. Podczas ładowania baterii napięcie z alternatora przekracza wartość nominalną, osiągając nawet ~14.5V. Te aspekty należy uwzględnić zarówno podczas projektowania i doboru urządzeń do sterowania zaworami hydraulicznymi, jak i później, przy implementacji sterowania i zabezpieczeń.
 
@@ -32,7 +32,7 @@ Zawór elektromagnetyczny to zawór hydrauliczny zintegrowany z odpowiednio dobr
 
 > **Rysunek 1**. Budowa zaworu dwupołożeniowego oraz proporcjonalnego
 
-Zawory dwupołożeniowe, mimo swojej prostoty i niezawodności, mają ograniczone zastosowanie w nowoczesnych układach hydrauliki siłowej. W maszynach takich jak koparki, ładowarki, dźwigi czy podnośniki, gdzie wymagane jest precyzyjne sterowanie ruchem siłowników lub napędów, zawory typu włącz/wyłącz okazują się niewystarczające. Nie pozwalają na płynną regulację przepływu, prędkości ani pozycji, co znacznie ogranicza ich funkcjonalność w aplikacjach wymagających dozowania, pozycjonowania lub łagodnego startu i zatrzymania. Z drugiej strony, zawory z wbudowaną elektroniką sterującą, mimo że oferują bardzo wysoką precyzję i często pełną diagnostykę, są rozwiązaniami kosztownymi i nie zawsze łatwo dostępnymi, zarówno pod względem cenowym, jak i logistycznym. Ich wymienność pomiędzy producentami bywa ograniczona, a dostępność mniejsza.
+Zawory dwupołożeniowe, mimo swojej prostoty i niezawodności, mają ograniczone zastosowanie w nowoczesnych układach hydrauliki siłowej. W maszynach takich jak koparki, ładowarki, żurawie czy podnośniki, gdzie wymagane jest precyzyjne sterowanie ruchem siłowników lub napędów, zawory typu włącz/wyłącz okazują się niewystarczające. Nie pozwalają na płynną regulację przepływu, prędkości ani pozycji, co znacznie ogranicza ich funkcjonalność w aplikacjach wymagających dozowania, pozycjonowania lub łagodnego startu i zatrzymania. Z drugiej strony, zawory z wbudowaną elektroniką sterującą, mimo że oferują bardzo wysoką precyzję i często pełną diagnostykę, są rozwiązaniami kosztownymi i nie zawsze łatwo dostępnymi, zarówno pod względem cenowym, jak i logistycznym. Ich wymienność pomiędzy producentami bywa ograniczona, a dostępność mniejsza.
 
 Z tego względu zawory proporcjonalne _(bez elektroniki)_ stanowią najpopularniejsze rozwiązanie, mimo że ich implementacja z poziomu aplikacji jest najtrudniejsza. Pozwalają zrealizować płynną regulację. Są szeroko stosowane w praktyce przemysłowej i mobilnej, co dodatkowo obniża ich cenę i zwiększa dostępność. Zawory proporcjonalne są elastyczne i mogą pracować także jako zawory dwupołożeniowe z możliwością realizacji łagodnego startu i zatrzymania. Oddzielenie elementów wykonawczych od sterowania daje swobodę w projektowaniu logiki i doborze parametrów sterowania. W przeciwieństwie do zaworów z wbudowaną elektroniką sterującą, które są fabrycznie zamknięte i trudne do modyfikacji, zawory proporcjonalne pozwalają na większą kontrolę i łatwiejsze dopasowanie w aplikacjach niestandardowych. Ponieważ są jednocześnie najczęściej stosowanym rozwiązaniem i wymagają największego zaangażowania po stronie aplikacji, to właśnie im poświęcona będzie dalsza część pracy.
 
@@ -88,13 +88,13 @@ Warto również zapewnić dodatkowe parametry, które poprawiają ergonomię obs
 
 ![Funkcja](img/function.png)
 
-> **Rysunek 2**. Poglądowa charakterystyka zaworu wraz z nastawami. Na osi **x** jest wartość wyjściowa sterująca proporcjonalna do prądu/napięcia cewki, a na **y** wartość proporcjonalna do sygnału wejściowego.
+> **Rysunek 2**. Poglądowa charakterystyka zaworu wraz z nastawami. Na osi **y** jest wartość wyjściowa sterująca proporcjonalna do prądu/napięcia cewki, a na **x** wartość proporcjonalna do sygnału wejściowego.
 
 ## Układ wykonawczy
 
 W systemach automatyki przemysłowej spotykane są dwa główne sposoby realizacji połączeń sygnałów cyfrowych: układy typu **Source** i układy typu **Sink**[^8]. W konfiguracji typu Source, sygnał sterujący jest dostarczany przez sterownik, który podaje napięcie `12V`/`24V` na wyjściu — prąd przepływa wtedy przez obciążenie do wspólnej masy `GND`. W praktyce takie wyjścia realizuje się z użyciem tranzystorów **PNP** lub MOSFET'ów typu **P** _(rys 3a)_. Z kolei w konfiguracji typu Sink, napięcie zasilające jest podawane na stałe z zewnętrznego źródła, a sterownik _"zamyka"_ obwód do masy poprzez wyjście, prąd przepływa w kierunku sterownika. Układy tego typu bazują na tranzystorach **NPN** lub MOSFET'ach typu **N** _(rys 3b, 3c)_.
 
-Każda z tych metod ma swoje zalety. Układy Source są wygodne instalacyjnie, dzięki wspólnej masie urządzeń upraszczają połączenia, co zmniejsza liczbę przewodów i ułatwia diagnostykę. Ma to szczególne znaczenie w maszynach mobilnych i budowlanych, gdzie potencjał GND często jest połączony z ramą pojazdu lub obudową maszyny. Z drugiej strony, układy Sink są korzystniejsze z punktu widzenia konstrukcji elektroniki, tranzystory typu N są tańsze, szybsze i bardziej wydajne, dlatego są preferowane w projektowaniu nowoczesnych sterowników i modułów. Dla niskich prądów wystarczy prosty MOSFET typu N z rezystorem i diodą zabezpieczającą, a dla większych łatwo dostępne są gotowe drivery.
+Każda z tych metod ma swoje zalety. Układy Source są wygodne instalacyjnie, dzięki wspólnej masie urządzeń upraszczają połączenia, co zmniejsza liczbę przewodów i ułatwia diagnostykę. Ma to szczególne znaczenie w maszynach mobilnych i budowlanych, gdzie potencjał `GND` często jest połączony z ramą pojazdu lub obudową maszyny. Z drugiej strony, układy Sink są korzystniejsze z punktu widzenia konstrukcji elektroniki, tranzystory typu N są tańsze, szybsze i bardziej wydajne, dlatego są preferowane w projektowaniu nowoczesnych sterowników i modułów. Dla niskich prądów wystarczy prosty MOSFET typu N z rezystorem i diodą zabezpieczającą, a dla większych łatwo dostępne są gotowe drivery. W przypadku zwarcia spowodowanego awarią lub błędem, w układach typu Sink _(z MOSFET-em N)_ może dojść do niekontrolowanego, pełnego otwarcia zaworu, co stanowi poważne zagrożenie, szczególnie w aplikacjach mobilnych, gdzie ryzyko takiej sytuacji jest większe.
 
 ![Mosfer](img/mosfet.png)
 
@@ -108,34 +108,35 @@ W Europie dominującym standardem są wyjścia typu Source. Takie rozwiązania s
 
 Wymagania projektowe dla układu sterowania zaworem proporcjonalnym w zastosowaniu mobilnym _(np. maszyna budowlana)_ są stosunkowo wysokie. Sterownik musi spełniać następujące kryteria:
 
-- Zasilanie napięciem 12V DC, zgodne z instalacjami w pojazdach;
+- Zasilanie napięciem 12VDC, zgodne z instalacjami w pojazdach;
 - Możliwość pomiaru napięcia zasilania _(ze względu na jego niestabilność)_;
 - Obsługa sygnału wejściowego, w którym 12V jest interpretowane jako logiczna 1️⃣;
-- Generowanie sygnału PWM o amplitudzie 12V na wyjściu typu Source.
+- Generowanie sygnału PWM o amplitudzie 12V na wyjściu typu Source;
+- Firmware wgrywany bezpośrednio na sterownik _(bez systemu operacyjnego)_, co zapewnia błyskawiczny czas rozruchu i wysoką niezawodność.
 
 Spośród najpopularniejszych sterowników _(tab. 1)_ jedynie dwa modele spełniają powyższe wymagania: **Allen-Bradley CompactLogix** oraz **Eaton easyE4**. Pomiar napięcia zasilania można zrealizować za pomocą wejścia napięciowego 0..10V z dzielnikem napięcia lub przy użyciu dodatkowego modułu.
 
 > **Tabela 1**. Zestawienie najpopularniejszych sterowników PLC wraz z wybranymi parametrami technicznymi.
-> _Symbol ❌ oznacza brak danej funkcjonalności lub niespełnienie wymagań projektu. W kolumnie Firmware symbol ✅ oznacza możliwość bezpośredniego wgrywania programu do sterownika, natomiast ❌ wskazuje na pracę z systemem operacyjnym. Dane z tabeli należy traktować jako poglądowe. Wiele sterowników oferuje dedykowane moduły rozszerzeń, zarówno wyjściowe, o większej wydajności prądowej, jak i specjalne moduły do obsługi sygnałów 230V. Podane wartości dotyczą standardowych wejść cyfrowych oraz wyjść tranzystorowych._
+> _Symbol ❌ oznacza brak danej funkcjonalności lub niespełnienie wymagań projektu. Symbol ✅ przeciwnie._ > _Dane z tabeli należy traktować jako poglądowe. Wiele sterowników oferuje dedykowane moduły rozszerzeń, zarówno wyjściowe, o większej wydajności prądowej, jak i specjalne moduły do obsługi sygnałów 230V. Podane wartości dotyczą standardowych wejść cyfrowych oraz wyjść tranzystorowych._
 
-| Sterownik PLC                          |     Zasilanie | DI `0` |   DI `1` | DI 230V | Typ `TO`       | Prąd `TO` | Pomiar zasilania [V] | Firmware |
-| -------------------------------------- | ------------: | -----: | -------: | :-----: | -------------- | :-------: | :------------------: | :------: |
-| Siemens S7-1200                        | 20.4–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source      |   0.5A    |          ❌          |    ✅    |
-| Siemens S7-1500                        | 19.2–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source/Sink |   0.5A    |          ❌          |    ✅    |
-| Mitsubishi MELSEC iQ-F _(FX5U)_        |    ~20–28V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source/Sink |   0.5A    |          ❌          |    ✅    |
-| Beckhoff CX7000 _(Embedded-PC)_        | 20.4–28.8V ❌ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Source      |   0.5A    |          ❌          |    ❌    |
-| WAGO PFC200 _(750-8212)_               |   18–31.2V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ❌    |
-| Allen-Bradley CompactLogix _(1769-Lx)_ |   10–28.8V ✅ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Source      |   0.5A    |          ❌          |    ✅    |
-| Schneider Modicon M221                 | 20.4–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source      |   0.5A    |          ❌          |    ✅    |
-| Phoenix Contact AXC F 2152             |   19.2–30V ❌ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ❌    |
-| B&R X20                                | 20.4–28.8V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ❌ Sink        |   0.5A    |          ❌          |    ✅    |
-| Delta DVP-SS2                          | 20.4–28.8V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ✅    |
-| Eaton easyE4                           | 12.2–28.8V ✅ |  ≤ 5 V |  ≥ 9V ✅ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ✅    |
-| ABB AC500 _(PM573)_                    |     20–30V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ✅    |
-| Bosch Rexroth IndraLogic               |     18–30V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ✅    |
-| Unitronics UniStream _(USC-B5-B1)_     | 10.2–28.8V ✅ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |          ❌          |    ✅    |
-| Turck TX500 _(TX513-P3CV01)_           |     10–32V ✅ |  ≤ 6 V | ≥ 12V ✅ |   ❌    | ✅ Source      |   0.5A    |          ❌          |    ❌    |
-| OpenCPLC                               |   11–32V ✅ |  ≤ 5 V |  ≥ 9V ✅ |   ✅    | ✅ Source      |    4A     |          ✅          |    ✅    |
+| Sterownik PLC                          |     Zasilanie | DI `0` |   DI `1` | DI 230V | Typ `TO`       | Prąd `TO` | Pomiar<br>zasilania [V] | Firmware |
+| -------------------------------------- | ------------: | -----: | -------: | :-----: | -------------- | :-------: | :---------------------: | :------: |
+| Siemens S7-1200                        | 20.4–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source      |   0.5A    |           ❌            |    ✅    |
+| Siemens S7-1500                        | 19.2–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source/Sink |   0.5A    |           ✅            |    ✅    |
+| Mitsubishi MELSEC iQ-F _(FX5U)_        |    ~20–28V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source/Sink |   0.5A    |           ✅            |    ✅    |
+| Beckhoff CX7000 _(Embedded-PC)_        | 20.4–28.8V ❌ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Source      |   0.5A    |           ❌            |    ❌    |
+| WAGO PFC200 _(750-8212)_               |   18–31.2V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |           ❌            |    ❌    |
+| Allen-Bradley CompactLogix _(1769-Lx)_ |   10–28.8V ✅ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Source      |   0.5A    |           ❌            |    ✅    |
+| Schneider Modicon M221                 | 20.4–28.8V ❌ |   ≤ 5V | ≥ 15V ❌ |   ❌    | ✅ Source      |   0.5A    |           ❌            |    ✅    |
+| Phoenix Contact AXC F 2152             |   19.2–30V ❌ |   ≤ 5V | ≥ 11V ✅ |   ❌    | ✅ Sink/Source |   0.5A    |           ❌            |    ❌    |
+| B&R X20                                | 20.4–28.8V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ❌ Sink        |   0.5A    |           ✅            |    ✅    |
+| Delta DVP-SS2                          | 20.4–28.8V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |           ❌            |    ✅    |
+| Eaton easyE4                           | 12.2–28.8V ✅ |  ≤ 5 V |  ≥ 9V ✅ |   ✅    | ✅ Sink/Source |   0.5A    |           ❌            |    ✅    |
+| ABB AC500 _(PM573)_                    |     20–30V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |           ✅            |    ✅    |
+| Bosch Rexroth IndraLogic               |     18–30V ❌ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |           ✅            |    ✅    |
+| Unitronics UniStream _(USC-B5-B1)_     | 10.2–28.8V ✅ |  ≤ 5 V | ≥ 15V ❌ |   ❌    | ✅ Sink/Source |   0.5A    |           ❌            |    ✅    |
+| Turck TX500 _(TX513-P3CV01)_           |     10–32V ✅ |  ≤ 6 V | ≥ 12V ✅ |   ❌    | ✅ Source      |   0.5A    |           ❌            |    ❌    |
+| OpenCPLC                               |     11–32V ✅ |  ≤ 5 V |  ≥ 9V ✅ |   ✅    | ✅ Source      |    4A     |           ✅            |    ✅    |
 
 Optymalnym wyborem wydaje się linia otwartoźródłowych sterowników **OpenCPLC**[^9]. Standardowe wyjścia oferują wysoką wydajność prądową **4A** na kanał, przy czym całkowite obciążenie grupy nie powinno przekraczać 7A. Sterownik wyposażony jest w wewnętrzny pomiar napięcia zasilania, dzięki czemu nie ma potrzeby stosowania dodatkowych modułów ani wykorzystywania wejść analogowych. Sterowniki OpenCPLC sprawdzają się dobrze w warunkach niestabilnego zasilania. Warto dodać, że cały projekt został zaprojektowany właśnie z myślą o tego typu zastosowaniach, dlatego naturalnie jest do nich wyjątkowo dobrze przystosowany.
 
@@ -145,15 +146,15 @@ W nieniejszej pracy omówiono rozwiązanie zastosowane w firmie **Amar** zastoso
 
 > **Rysunek 4.** Schemat wyprowadzeń _(pinout)_ sterownika **OpenCPLC Eco**
 
-Jak sama nazwa wskazuje, jest to ekonomiczna wersja sterownika, wyposażona w mikrokontroler `STM32G071RB`, który posiada mniej pamięci i ograniczoną liczbę peryferiów w porównaniu do modelu `STM32G0B1RB`. Jedną z charakterystycznych cech wersji **Eco** jest obecność aż sześciu potencjometrów, które mogą pełnić funkcję wejść do lokalnego ustawiania parametrów. Pozwala to na szybką modyfikację nastaw bez potrzeby użycia komputera, wystarczy zwykły śrubokręt. Rozwiązanie to sprawdza się szczególnie dobrze w warunkach terenowych, gdzie dostęp do komputera może być utrudniony. Znacząco upraszcza to proces kalibracji oraz późniejszej regulacji, np. w przypadku zmiany charakterystyki zaworu z czasem. Dodatkowo z myślą o systemach mobilnych, często opartych na joystickach (potencjometrach), sterownik wyposażono w stabilne wyjście referencyjne **10V**, niezależne od głównego napięcia zasilania. Umożliwia ono bezpośrednie zasilanie potencjometrów bez potrzeby stosowania dodatkowych przetwornic, które byłyby konieczne w systemach z niestabilnym zasilaniem.
+Jak sama nazwa wskazuje, jest to ekonomiczna wersja sterownika, wyposażona w mikrokontroler `STM32G071RB`, który posiada mniej pamięci i ograniczoną liczbę peryferiów w porównaniu do modelu `STM32G0B1RB`. Jedną z charakterystycznych cech wersji **Eco** jest obecność aż sześciu potencjometrów, które mogą pełnić funkcję wejść do lokalnego ustawiania parametrów. Pozwala to na szybką modyfikację nastaw bez potrzeby użycia komputera, wystarczy zwykły śrubokręt i miernik, którym można zmierzyć napięcie w zakresie 0–3.3V, proporcjonalne do danej nastawy. Rozwiązanie to sprawdza się szczególnie dobrze w warunkach terenowych, gdzie dostęp do komputera może być utrudniony. Znacząco upraszcza to proces kalibracji oraz późniejszej regulacji, np. w przypadku zmiany charakterystyki zaworu z czasem. Dodatkowo z myślą o systemach mobilnych, często opartych na joystickach (potencjometrach), sterownik wyposażono w stabilne wyjście referencyjne **10V**, niezależne od głównego napięcia zasilania. Umożliwia ono bezpośrednie zasilanie potencjometrów bez potrzeby stosowania dodatkowych przetwornic, które byłyby konieczne w systemach z niestabilnym zasilaniem.
 
 [^9]: E. Świtalski, K. Górecki; **Otwarte i warstwowe projektowanie sterowników PLC na przykładzie sterownika do zastosowań edukacyjnych**, Przegląd Elektrotechniczny, 2023, `doi:10.15199/48.2024.10.61`
 
 ## Demo
 
-W aplikacji demonstracyjnej _(rys. 5)_ sygnałem sterującym jest napięcie z zakresu **0..10V**, generowane przez potencjometr podłączony między linie 0V i 10V. Dzięki temu pełny zakres obrotu potencjometru odpowiada pełnemu zakresowi wejścia analogowego. Nie można w tym przypadku stosować trybu `RDIV` _(dzielnik napięciowy)_, ponieważ potencjometr podłączony bezpośrednio do szyny zasilania działa jako źródło napięcia, a nie jako dzielnik. Z tego powodu wejście analogowe **`AI1`** musi pracować w trybie **VF** _(wtórnik napięciowy)_, który zapewnia poprawne dopasowanie impedancji i pozwala na prawidłowy odczyt napięcia z potencjometru bez jego zniekształcania.
+W aplikacji demonstracyjnej _(rys. 5)_ sygnałem sterującym jest napięcie z zakresu **0..10V**, generowane przez potencjometr **P1** podłączony między linie 0V i 10V. Dzięki temu pełny zakres obrotu potencjometru odpowiada pełnemu zakresowi wejścia analogowego. Nie można w tym przypadku stosować trybu `RDIV` _(dzielnik napięciowy)_, ponieważ potencjometr podłączony bezpośrednio do szyny zasilania działa jako źródło napięcia, a nie jako dzielnik. Z tego powodu wejście analogowe **`AI1`** musi pracować w trybie **VF** _(wtórnik napięciowy)_, który zapewnia poprawne dopasowanie impedancji i pozwala na prawidłowy odczyt napięcia z potencjometru bez jego zniekształcania.
 
-Pozycja środkowa potencjometru odpowiada napięciu **5V**, co traktowane jest jako punkt neutralny, w którym oba zawory pozostają nieaktywne. Przesunięcie gałki w kierunku niższego napięcia _(np. 4.8V–0V)_ powoduje liniowe wysterowanie pierwszego zaworu **Y1** _(podłączony do **`TO1`**)_ w pełnym zakresie pracy zaworu, natomiast w stronę wyższego napięcia _(np. 5.2V–10V)_ wysterowuje zawór drugi **Y2** _(podłączony do **`TO2`**)_. Przykład demonstracyjny został tak skonstruowany, ponieważ odzwierciedla rzeczywiste działanie: jeden joystick steruje parą siłowników _(góra–dół, lewo–prawo, przód–tył)_. Sterowanie działa tylko wtedy, gdy aktywne jest wejście cyfrowe **`DI1`** pełniące funkcję zezwolenia. Może być ono sprzężone z dodatkowym stykiem mechanicznym wbudowanym w joystick, który załącza się dopiero po wyjściu z pozycji neutralnej, zabezpieczając dodatkowo przed przypadkowym wysterowaniem zaworów. Wyjście **`RO1`** jest aktywowane, gdy którykolwiek z zaworów jest aktualnie aktywny i może być wykorzystany w innych częściach systemu.
+Pozycja środkowa potencjometru odpowiada napięciu **5V**, co traktowane jest jako punkt neutralny, w którym oba zawory pozostają nieaktywne. Przesunięcie joysticka połączonego z potencjometrem w kierunku niższego napięcia _(np. 4.8V–0V)_ powoduje liniowe wysterowanie pierwszego zaworu **Y1** _(podłączony do **`TO1`**)_ w pełnym zakresie pracy zaworu, natomiast w stronę wyższego napięcia _(np. 5.2V–10V)_ wysterowuje zawór drugi **Y2** _(podłączony do **`TO2`**)_. Przykład demonstracyjny został tak skonstruowany, ponieważ odzwierciedla rzeczywiste działanie: jeden joystick steruje parą siłowników _(góra–dół, lewo–prawo, przód–tył)_. Sterowanie działa tylko wtedy, gdy aktywne jest wejście cyfrowe **`DI1`** pełniące funkcję zezwolenia. Może być ono sprzężone z dodatkowym stykiem mechanicznym **S1** wbudowanym w joystick, który załącza się dopiero po wyjściu z pozycji neutralnej, zabezpieczając dodatkowo przed przypadkowym wysterowaniem zaworów. Wyjście **`RO1`** jest aktywowane, gdy którykolwiek z zaworów jest aktualnie aktywny i może być wykorzystany w innych częściach systemu lub, jak w tym przypadku, podpięte do kontrolki sygnalizacyjnej **H1**.
 
 ![Schemat](img/schema.png)
 
@@ -210,20 +211,20 @@ void loop(void)
 }
 ```
 
-[^10]: E. Świtalski, K. Górecki; **System zwalniania wątków VRTS jako alternatywa dla RTOS**, Przegląd Elektrotechniczny, 2023, `DOI: 10.15199/48.2023.09.52`
+[^10]: E. Świtalski, K. Górecki; **System zwalniania wątków VRTS jako alternatywa dla RTOS**, Przegląd Elektrotechniczny, 2023, `doi:10.15199/48.2023.09.52`
 
 ## Projekt Amar
 
-Projekt polega na adaptacji standardowej koparki do roli zdalnie sterowanego systemu serwisowego, przeznaczonego do czyszczenia i obsługi innych maszyn w warunkach placu budowy oraz podczas prac terenowych. Zmodernizowana konstrukcja umożliwia bezpieczne prowadzenie operacji bez konieczności przebywania operatora w kabinie, co zwiększa elastyczność i bezpieczeństwo pracy w trudnym środowisku. W trakcie pracy operator trzyma nadajnik w rękach, który jest on zasilany bateryjnie. Odbiornik, sterowniki **Eco** oraz pozostałe komponenty systemu znajdują się na maszynie i są zasilane z głównego akumulatora ładowanego przez agregat prądotwórczy.
+Projekt polega na adaptacji standardowej koparki do roli zdalnie sterowanego systemu serwisowego, przeznaczonego do czyszczenia i obsługi innych maszyn w warunkach placu budowy oraz podczas prac terenowych. Zmodernizowana konstrukcja umożliwia bezpieczne prowadzenie operacji bez konieczności przebywania operatora w kabinie, co zwiększa elastyczność i bezpieczeństwo pracy w trudnym środowisku. W trakcie pracy operator trzyma nadajnik w rękach, który jest on zasilany bateryjnie. Odbiornik, sterowniki **Eco** oraz pozostałe komponenty systemu znajdują się na maszynie i są zasilane z głównego akumulatora ładowanego przez alternator _(agregat prądotwórczy)_.
 
 W projekcie zastosowano bezprzewodowy system sterowania firmy **Irel**. Centralnym elementem jest ręczny nadajnik _(pad)_ wyposażony w zestaw manipulatorów, którego układ _(layout)_ może być dostosowany do indywidualnych potrzeb klienta, zarówno pod względem liczby i rodzaju elementów sterujących, jak i ich rozmieszczenia. Pad przesyła drogą radiową aktualne stany wszystkich manipulatorów _(joysticków, przełączników itp.)_ do dedykowanego odbiornika zamontowanego na maszynie. Odbiornik przetwarza te dane i generuje odpowiednie sygnały wyjściowe:
 
 - analogowe w standardach automatyki **0..10V** lub **4..20mA** dla manipulatorów typu joystick,
 - cyfrowe _(ON/OFF)_ dla przełączników.
 
-Wygenerowane sygnały trafiają do czterech modułów OpenCPLC **Eco** zamontowanych na maszynie. Moduły te wykorzystują dedykowane oprogramowanie _(firmware)_, które miesza sygnały wejściowe i steruje zaworami proporcjonalnymi. Dodatkowo obsługiwane są funkcje bezpieczeństwa. We wszystkich modułach działa ten sam firmware, co upraszcza serwis i umożliwia szybką wymianę w przypadku awarii.
+Wygenerowane sygnały trafiają do czterech modułów OpenCPLC **Eco** zamontowanych na maszynie. Moduły te wykorzystują dedykowane oprogramowanie _(firmware)_, które miesza sygnały wejściowe i steruje zaworami proporcjonalnymi. Dodatkowo obsługiwane są funkcje bezpieczeństwa. We wszystkich modułach działa ten sam firmware, co upraszcza serwis i umożliwia szybką wymianę w przypadku awarii. Cała instalacja została umieszczona w szafie o klasie szczelności **IP55**, co minimalizuje wpływ agresywnych warunków środowiskowych.
 
-Ze względu na ochronę własności intelektualnej firmy, w publikacji przedstawiono jedynie schemat ideowy zdalnego sterowania zaworami _(rys. 6)_ oraz zdjęcia poglądowe systemu _(rys. 7)_. Sterownik Eco różni się od wersji pokazanej w publikacji, ponieważ był to prototyp w wersji beta.
+W porównaniu z dostępnymi na rynku wzmacniaczami rozwiązanie to oferuje szeroki zakres regulacji i wysoką precyzję, szczególnie przy niskich napięciach i niewielkim nasyceniu rdzenia, gdzie wymagana jest duża dokładność ruchu. Podczas testów prowadzonych przez automatyków z firmy **Amar**, wybrane rozwiązania rynkowe nie pozwoliły na uzyskanie odpowiedniej jakości regulacji. Ze względu na ochronę własności intelektualnej firmy, w publikacji przedstawiono jedynie schemat ideowy zdalnego sterowania zaworami _(rys. 6)_ oraz zdjęcia poglądowe systemu _(rys. 7)_. Sterownik Eco różni się od wersji pokazanej w publikacji, ponieważ był to prototyp w wersji beta.
 
 ![Irel](img/irel.png)
 
