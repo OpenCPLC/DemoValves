@@ -4,7 +4,7 @@ Emilian **Świtalski**, Krzysztof **Górecki**
 
 ### Streszczenie
 
-Artykuł przedstawia zagadnienia związane z bezpośrednim sterowaniem zaworami proporcjonalnymi w aplikacjach mobilnych, w szczególności zasilanych napięciem 12V. Omówiono budowę i charakterystyki zaworów, metody sterowania, sposób kompensacji nieliniowości oraz układy wykonawcze Source/Sink. Zaprezentowano wymagania dla sterownika PLC, porównanie popularnych rozwiązań oraz implementację na otwartym systemie **OpenCPLC**. Opisano przykład praktyczny — zdalnie sterowaną instalację hydrauliczną w przerobionej koparce, uwzględniającą modelowanie, nastawy oraz aspekty ergonomii i bezpieczeństwa.
+Artykuł przedstawia zagadnienia związane z bezpośrednim sterowaniem zaworami proporcjonalnymi w aplikacjach mobilnych, w szczególności zasilanych napięciem 12V. Omówiono budowę i charakterystyki zaworów, metody sterowania, sposób kompensacji nieliniowości oraz układy wykonawcze Source/Sink. Zaprezentowano wymagania dla sterownika PLC, porównanie popularnych rozwiązań oraz implementację na otwartym systemie **OpenCPLC**. Opisano przykład praktyczny, zdalnie sterowaną instalację hydrauliczną w przerobionej koparce, uwzględniającą modelowanie, nastawy oraz aspekty ergonomii i bezpieczeństwa.
 
 **Słowa kluczowe**: zawory proporcjonalne, hydraulika mobilna, sterowanie PWM, mosfet driver, source, sink, OpenCPLC, sterownik PLC, automatyka mobilna, dither, impulsy konserwujące, joystick, regulacja przepływu.
 
